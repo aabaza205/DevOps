@@ -1,0 +1,12 @@
+name: api_call
+on:
+   repository_dispatch:
+     types: [api_call]
+jobs:
+   workflow_dispatch:
+     runs-on: ubuntu-latest
+     steps:
+       - name: Call API
+         run: |
+           echo "Api call workflow trigerred successfuly"
+           
