@@ -18,4 +18,4 @@ jobs:
     steps:
       - name: Set up environment
         run: |
-          echo "Deploying to ${{ inputs.environement }} environment"
+          echo "Deploying to the ${{ github.event.inputs.environment }} environment"
