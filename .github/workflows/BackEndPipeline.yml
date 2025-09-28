@@ -1,0 +1,88 @@
+name: Backend CICD Pipeline
+
+on:
+  workflow_call:
+    inputs:
+      APP_TIER:
+        description: "Application Tier"
+        required: false
+        type: string
+        default: "BE"
+      APP_ENV:
+        description: "Application Environment"
+        required: true
+        type: string
+      AWS_REGION:
+        description: "AWS Region"
+        required: true
+        type: string
+      APPROVAL_EMAIL:
+        description: "Approval Email Address"
+        required: false
+        default: "false"
+        type: string
+      ZOOM_EMAIL:
+        description: "Zoom Email for Notifications"
+        required: false
+        type: string
+        default: VitaProtects-DevOps-8596161d3fb640819fe47403a0bab51d@teamchat.zoom.us
+      ECR_REGISTRY:
+        description: "ECR Registry"
+        required: true
+        type: string
+      ECR_REPOSITORY:
+        description: "ECR Repository"
+        required: true
+        type: string
+      ECS_CLUSTER:
+        description: "ECS Cluster"
+        required: true
+        type: string
+      ECS_SERVICE:
+        description: "ECS Service"
+        required: true
+        type: string
+      TASK_DEFINITION:
+        description: "Task Definition"
+        required: true
+        type: string
+      CONTAINER_NAME:
+        description: "Container Name"
+        required: true
+        type: string
+      NOTIFY:
+        description: "Boolean to specify if notification is required or not"
+        required: false
+        type: string
+        default: "true"
+      DB_NAME:
+        description: "Database URL to take snapshot from"
+        required: false
+        type: string
+        default: "false"
+
+jobs: 
+  ensure_from_calling_workflow:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'tag:')
+    steps:
+      - name: Ensure from calling workflow
+        run: echo "This workflow is intended to be called from another workflow."
+      
+      - name: ensure from  environment variables
+        run: echo "Environment is ${{ inputs.APP_ENV }}
+
+      - name: ensure from region variables
+        run: echo "Region is ${{ inputs.AWS_REGION }}"
+      
+      - name: ensure from commit_message
+        run: echo "Commit message is ${{ github.event.head_commit.message }}"
+      
+      - name: extract_release_notes
+        uses: ThirdWayv/DevOps/extract_release_notes.yml@workflows
+        id: extract_release_notes
+        with:
+          MESSAGE: ${{ github.event.head_commit.message }}
+          
+  
+  
