@@ -1,0 +1,87 @@
+name: "Commit Notes Parser"
+description: "Extracts tag, Release Notes, and flags ([[CD]], [[db]]) from a commit message"
+author: "DevOps Team"
+
+inputs:
+  message:
+    description: "The commit message to parse"
+    required: true
+  release_notes_label:
+    description: "Label to identify the release notes section in the commit message"
+    required: false
+    default: "Release Notes:"
+
+outputs:
+  has_tag:
+    description: "Whether a tag was found"
+    value: ${{ steps.extract_tag.outputs.has_tag }}
+  tag:
+    description: "Extracted tag"
+    value: ${{ steps.extract_tag.outputs.tag }}
+  release_notes:
+    description: "Extracted release notes"
+    value: ${{ steps.extract_release_notes.outputs.RELEASE_NOTES }}
+  cd_flag:
+    description: "Whether [[CD]] flag exists"
+    value: ${{ steps.check_cd.outputs.cd_flag }}
+  db_flag:
+    description: "Whether [[DB]] flag exists"
+    value: ${{ steps.check_db.outputs.db_flag }}
+
+runs:
+  using: composite
+  steps:
+    - name: Extract Tag
+      id: extract_tag
+      shell: bash
+      run: |
+        tag=$(echo "${{ inputs.message }}" | sed -n -e 's/.*tag:\([^ ]*\).*/\1/p')
+        if [ -n "$tag" ]; then
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+          echo "has_tag=true" >> $GITHUB_OUTPUT
+        else
+          echo "tag=" >> $GITHUB_OUTPUT
+          echo "has_tag=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Detect [[CD]] flags
+      id: check_cd
+      shell: bash
+      run: |
+        if echo "${{ inputs.message }}" | grep -qi '\[\[cd\]\]' && [ "${{ steps.extract_tag.outputs.has_tag }}" == "true" ]; then
+          echo "cd_flag=true" >> $GITHUB_OUTPUT
+        else
+          echo "cd_flag=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Detect [[DB]] flags
+      id: check_db
+      shell: bash
+      run: |
+        if echo "${{ inputs.message }}" | grep -qi '\[\[db\]\]' && [ "${{ steps.extract_tag.outputs.has_tag }}" == "true" ]; then
+          echo "db_flag=true" >> $GITHUB_OUTPUT
+        else
+          echo "db_flag=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Extract Release Notes
+      id: extract_release_notes
+      if: steps.extract_tag.outputs.has_tag == 'true'
+      shell: bash
+      run: |
+        NOTES=$(
+          echo "${{ inputs.message }}" |
+            sed -nE '
+              /[Rr]elease[[:space:]]+[Nn]otes:/ {
+                s/.*[Rr]elease[[:space:]]+[Nn]otes:[[:space:]]*//
+                p
+                n
+                :loop
+                p
+                n
+                b loop
+              }
+            ' |
+            sed -E '1{/^[[:space:]]*$/d;}'
+        )
+        echo "RELEASE_NOTES=$NOTES" >> $GITHUB_OUTPUT
