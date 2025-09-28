@@ -79,7 +79,7 @@ jobs:
         run: echo "Commit message is ${{ github.event.head_commit.message }}"
       
       - name: extract_release_notes
-        uses: aabaza205/DevOps/extract_release_notes.yml@main
+        uses: aabaza205/DevOps@main
         id: extract_release_notes
         with:
           MESSAGE: ${{ github.event.head_commit.message }}
