@@ -83,6 +83,13 @@ jobs:
         id: extract_release_notes
         with:
           MESSAGE: ${{ github.event.head_commit.message }}
-          
+
+      - name: ensure from env for custom acrtions
+        run: |
+          echo "Tag found: ${{ steps.extract_release_notes.outputs.has_tag }}"
+          echo "Tag: ${{ steps.extract_release_notes.outputs.tag }}"
+          echo "Release Notes: ${{ steps.extract_release_notes.outputs.release_notes }}"
+          echo "CD Flag: ${{ steps.extract_release_notes.outputs.cd_flag }}"
+          echo "DB Flag: ${{ steps.extract_release_notes.outputs.db_flag }}"
   
   
