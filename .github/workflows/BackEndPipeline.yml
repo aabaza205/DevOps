@@ -70,7 +70,7 @@ jobs:
         run: echo "This workflow is intended to be called from another workflow."
       
       - name: ensure from  environment variables
-        run: echo "Environment is ${{ inputs.APP_ENV }}
+        run: echo "Environment is ${{ inputs.APP_ENV }}"
 
       - name: ensure from region variables
         run: echo "Region is ${{ inputs.AWS_REGION }}"
