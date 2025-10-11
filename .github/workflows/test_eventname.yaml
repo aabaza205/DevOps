@@ -1,4 +1,4 @@
-name: CI/CD Event Tester
+name: CI/CD Pipeline
 
 on:
   push:
@@ -8,24 +8,16 @@ on:
   pull_request:
     branches:
       - main
+    types:
+      - closed
 
 jobs:
-  event-check:
+  detect-event:
     runs-on: ubuntu-latest
     steps:
-      - name: Print event info
+      - name: Print event details
         run: |
-          echo "============================"
-          echo "🔹 EVENT NAME: ${{ github.event_name }}"
-          echo "🔹 BRANCH: ${{ github.ref }}"
-          echo "🔹 ACTOR: ${{ github.actor }}"
-          echo "🔹 SHA: ${{ github.sha }}"
-          echo "🔹 HEAD REF: ${{ github.head_ref }}"
-          echo "🔹 BASE REF: ${{ github.base_ref }}"
-          echo "============================"
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run simple test
-        run: echo "✅ Workflow triggered successfully!"
+          echo "Event name: ${{ github.event_name }}"
+          echo "Action: ${{ github.event.action }}"
+          echo "Branch: ${{ github.ref }}"
+          echo "Merged: ${{ github.event.pull_request.merged }}"
