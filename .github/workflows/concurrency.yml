@@ -2,7 +2,7 @@ name: concurrecny
 on: workflow_dispatch
 jobs:
   first_job:
-    runs-on: ununtu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: first_step
         run: echo " must run for every cases "
@@ -10,7 +10,7 @@ jobs:
 
 
   test_concurrency:
-    runs-on: ununtu-latest
+    runs-on: ubuntu-latest
     concurrency:
       group: deploy-${{ github.ref }}
       cancel-in-progress: false
