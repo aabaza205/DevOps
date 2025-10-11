@@ -1,0 +1,21 @@
+name: concurrecny 
+on: workflow_dispatch
+jobs:
+  first_job:
+    runs-on: ununtu-latest
+    steps:
+      - name: first_step
+        run: echo " must run for every cases "
+
+
+
+  test_concurrency:
+    runs-on: ununtu-latest
+    concurrency:
+      group: deploy-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: ahmed
+        run:  echo " test concurrency " 
+      
