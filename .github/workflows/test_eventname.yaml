@@ -1,15 +1,6 @@
 name: CI/CD Pipeline
 
-on:
-  push:
-    branches:
-      - main
-      - test
-  pull_request:
-    branches:
-      - main
-    types:
-      - closed
+on: workflow_call
 
 jobs:
   detect-event:
