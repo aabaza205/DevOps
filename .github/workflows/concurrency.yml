@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: deploy-${{ github.ref }}
-      cancel-in-progress: true
+      cancel-in-progress: false
       
 
     steps:
       - name: ahmed
         run:  echo " test concurrency " 
-      - run: sleep 50s 
+      - run: sleep 20s 
