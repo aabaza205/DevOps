@@ -70,5 +70,5 @@ jobs:
           echo "Action: ${{ github.event.action }}"
           echo "Branch: ${{ github.ref }}"
           echo "Merged: ${{ github.event.pull_request.merged }}"
-          echo " Environment: ${{ input.APP_ENV }} or $APP_ENV "
+          echo " Environment: ${{ inputs.APP_ENV }} or $APP_ENV "
           echo " github_workflow: ${{ github.workflow }}
