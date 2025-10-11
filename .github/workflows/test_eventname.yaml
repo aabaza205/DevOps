@@ -1,7 +1,8 @@
 name: CI/CD Pipeline
 
-on: workflow_call
-inputs:
+on:
+  workflow_call:
+    inputs:
       APP_TIER:
         description: "Application Tier"
         required: false
@@ -24,7 +25,7 @@ inputs:
         description: "Zoom Email for Notifications"
         required: false
         type: string
-        default: VitaProtects-DevOps-8596161d3fb640819fe47403a0bab51d@teamchat.zoom.us
+        default: "VitaProtects-DevOps-8596161d3fb640819fe47403a0bab51d@teamchat.zoom.us"
       ECR_REGISTRY:
         description: "ECR Registry"
         required: true
@@ -70,5 +71,5 @@ jobs:
           echo "Action: ${{ github.event.action }}"
           echo "Branch: ${{ github.ref }}"
           echo "Merged: ${{ github.event.pull_request.merged }}"
-          echo " Environment: ${{ inputs.APP_ENV }} or $APP_ENV "
-          echo " github_workflow: ${{ github.workflow }}
+          echo "Environment: ${{ inputs.APP_ENV }} or $APP_ENV"
+          echo "github_workflow: ${{ github.workflow }}"
