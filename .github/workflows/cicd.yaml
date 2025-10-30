@@ -7,7 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test-code
+        id: test
         run: echo "KEY=apex" >> $GITHUB_ENV
 
       - name: show-env
-        run: echo "the value is $KEY or can be written as ${{ env.KEY }}"
+        run: echo "the value is  ${{ env.KEY }} or can be written as ${{ steps.test.outputs.KEY }}" 
