@@ -1,6 +1,6 @@
 name: cicd Pipeline
 on:
-  push:
+  push
 
 jobs:
   test1:
@@ -15,7 +15,7 @@ jobs:
            echo "KEY=API" >> $GITHUB_OUTPUT
 
 
-      - namee: second step
+      - name: second step
         run: |
             echo " the value is $KEY "
             echo " the value is ${{ env.KEY }} "
