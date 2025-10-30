@@ -13,11 +13,11 @@ jobs:
         run: echo "KEY=apex" >> $GITHUB_ENV
 
       - name: show-env
-        run: echo "the value is  ${{ env.KEY }} or can be written as ${{ needs.test.outputs.KEY }}" 
+        run: echo "the value is  ${{ env.KEY }} or can be written as ${{ steps.test.outputs.KEY }}" 
 
   test2:
     runs-on: ubuntu-latest
     needs: test
     steps:
       - name: show-env-2
-        run: echo "the value from previous job is  ${{ needs.test.outputs.KEY }} or can be written as ${{ env.KEY }}"
+        run: echo "the value from previous job is  ${{ steps.test.outputs.KEY }} or can be written as ${{ env.KEY }}"
