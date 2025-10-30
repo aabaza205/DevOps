@@ -1,23 +1,30 @@
-name: CICD Pipeline for Frontend 
+name: cicd Pipeline
 on:
   push
 
 jobs:
-  test:
-    outputs:
-      KEY: ${{ steps.test.outputs.KEY }}  
+  test1:
     runs-on: ubuntu-latest
+    outputs:
+      KEY: ${{ steps.first_step.outputs.KEY}}
     steps:
-      - name: test-code
-        id: test
-        run: echo "KEY=apex" >> $GITHUB_ENV
+      - name: first step 
+        id : first_step
+        run: |
+           echo "KEY=API" >> $GITHUB_ENV
+           echo "KEY=API" >> $GITHUB_OUTPUT
 
-      - name: show-env
-        run: echo "the value is  ${{ env.KEY }} or can be written as ${{ steps.test.outputs.KEY }}" 
+
+      - namee: second step
+        run: |
+            echo " the value is $KEY "
+            echo " the value is ${{ env.KEY }} "
+            echo " the value is ${{ steps.first_step.outputs.KEY }} "
 
   test2:
     runs-on: ubuntu-latest
-    needs: test
     steps:
-      - name: show-env-2
-        run: echo "the value from previous job is  ${{ steps.test.outputs.KEY }} or can be written as ${{ env.KEY }}"
+      - name: step in test2
+        run: |
+           echo " this is test2 "
+           echo " the value is ${{ needs.test1.outputs.KEY }}"
