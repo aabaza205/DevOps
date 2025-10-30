@@ -1,0 +1,13 @@
+name: CICD Pipeline for Frontend 
+on:
+  push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test-code
+        run: echo "key=apex" >> $GITHUB_ENV
+
+      - name: show-env
+        run: echo "the valuse is $key or can be written as ${{ env.key }}"
